@@ -15,6 +15,7 @@ provider:
           Action:
             - dynamodb:PutItem
             - dynamodb:UpdateItem
+            - dynamodb:GetItem
           Resource: !GetAtt OrdersTable.Arn
         - Effect: Allow
           Action:
@@ -47,6 +48,13 @@ functions:
           arn: !GetAtt ProcessPaymentQueue.Arn
     environment:
       ORDERS_TABLE: !Ref OrdersTable
+  GetOrder:
+    handler: src/handlers/get_order.handler
+    events:
+      - http:
+          path: /orders/{order_id}
+          method: get
+          cors: true
 
 resources:
   Resources:
