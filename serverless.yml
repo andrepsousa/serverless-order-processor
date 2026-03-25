@@ -1,0 +1,60 @@
+service: serverless-order-processor
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: python3.12
+  region: us-east-1
+  tracing:
+    apiGateway: true
+    lambda: true
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+          Resource: !GetAtt OrdersTable.Arn
+        - Effect: Allow
+          Action:
+            - sqs:SendMessage
+          Resource: !GetAtt ProcessPaymentQueue.Arn
+
+functions:
+  CreateOrder:
+    handler: src/handlers/create_order.handler
+    events:
+      - http:
+          path: /orders
+          method: post
+    environment:
+      ORDERS_TABLE: !Ref OrdersTable
+      QUEUE_URL: !Ref ProcessPaymentQueue
+
+  ProcessPayment:
+    handler: src/handlers/process_payment.handler
+    events:
+      - sqs:
+          arn: !GetAtt ProcessPaymentQueue.Arn
+    environment:
+      ORDERS_TABLE: !Ref OrdersTable
+
+resources:
+  Resources:
+    OrdersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: OrdersTable-${sls:stage}
+        AttributeDefinitions:
+          - AttributeName: order_id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: order_id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+
+    ProcessPaymentQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: ProcessPaymentQueue-${sls:stage}

@@ -1,0 +1,16 @@
+# Ambiente Virtual
+.venv/
+venv/
+env/
+
+# Python Cache
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Serverless e Node
+.serverless/
+node_modules/
+
+# Variaveis de ambiente locais
+.env
