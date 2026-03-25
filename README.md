@@ -37,7 +37,7 @@ A arquitetura escolhida utiliza **SQS (Simple Queue Service)** em vez de DynamoD
 ### Instalação e Deploy
 1. Clone o repositório:
    ```bash
-   git clone [https://github.com/andrepsousa/serverless-order-processor.git](https://github.com/andrepsousa/serverless-order-processor.git)
+   git clone https://github.com/andrepsousa/serverless-order-processor.git
    cd serverless-order-processor
    ```
 2. Crie e ative o ambiente virtual:
@@ -71,7 +71,7 @@ A arquitetura escolhida utiliza **SQS (Simple Queue Service)** em vez de DynamoD
 **1. Criar um Pedido (POST):**
 Utilize o comando cURL abaixo (substitua a URL pela gerada no seu deploy):
 ```bash
-curl -X POST [https://SUA-URL-AQUI.execute-api.us-east-1.amazonaws.com/dev/orders](https://SUA-URL-AQUI.execute-api.us-east-1.amazonaws.com/dev/orders) \
+curl -X POST https://SUA-URL-AQUI.execute-api.us-east-1.amazonaws.com/dev/orders \
 -H "Content-Type: application/json" \
 -d '{"product": "Logitech MX Keys S", "price": 650.00}'
 ```
@@ -79,7 +79,7 @@ curl -X POST [https://SUA-URL-AQUI.execute-api.us-east-1.amazonaws.com/dev/order
 
 **2. Consultar o Pedido (GET):**
 ```bash
-curl [https://SUA-URL-AQUI.execute-api.us-east-1.amazonaws.com/dev/orders/COLE-O-ID-AQUI](https://SUA-URL-AQUI.execute-api.us-east-1.amazonaws.com/dev/orders/COLE-O-ID-AQUI)
+curl https://SUA-URL-AQUI.execute-api.us-east-1.amazonaws.com/dev/orders/COLE-O-ID-AQUI
 ```
 
 ## 🛠️ Testes Unitários
