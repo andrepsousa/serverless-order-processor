@@ -2,7 +2,8 @@ import json
 import os
 import uuid
 import boto3
-from datetime import datetime
+from datetime import datetime, timezone
+from decimal import Decimal
 
 dynamodb = boto3.resource('dynamodb')
 sqs = boto3.client('sqs')
@@ -12,7 +13,7 @@ QUEUE_URL = os.environ.get('QUEUE_URL')
 
 def handler(event, context):
     try:
-        body = json.loads(event.get('body', '{}'))
+        body = json.loads(event.get('body', '{}'), parse_float=Decimal)
 
         if 'product' not in body or 'price' not in body:
             return {
@@ -21,7 +22,7 @@ def handler(event, context):
             }
 
         order_id = str(uuid.uuid4())
-        timestamp = datetime.utcnow().isoformat()
+        timestamp = datetime.now(timezone.utc).isoformat()
 
         order_item = {
             'order_id': order_id,

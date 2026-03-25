@@ -21,6 +21,14 @@ provider:
             - sqs:SendMessage
           Resource: !GetAtt ProcessPaymentQueue.Arn
 
+package:
+  patterns:
+    - '!venv/**'
+    - '!.venv/**'
+    - '!node_modules/**'
+    - '!__pycache__/**'
+    - '!.pytest_cache/**'
+
 functions:
   CreateOrder:
     handler: src/handlers/create_order.handler
