@@ -2,7 +2,9 @@ import json
 import os
 import time
 import boto3
+from aws_xray_sdk.core import patch_all
 
+patch_all()
 dynamodb = boto3.resource('dynamodb')
 TABLE_NAME = os.environ.get('ORDERS_TABLE')
 

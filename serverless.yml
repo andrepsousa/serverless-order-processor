@@ -1,6 +1,13 @@
 service: serverless-order-processor
 frameworkVersion: '3'
 
+plugins:
+  - serverless-python-requirements
+
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    
 provider:
   name: aws
   runtime: python3.12
@@ -33,6 +40,10 @@ package:
 functions:
   CreateOrder:
     handler: src/handlers/create_order.handler
+    package:
+      patterns:
+        - src/handlers/create_order.py
+
     events:
       - http:
           path: /orders
@@ -43,6 +54,9 @@ functions:
 
   ProcessPayment:
     handler: src/handlers/process_payment.handler
+    package:
+      patterns:
+        - src/handlers/process_payment.py
     events:
       - sqs:
           arn: !GetAtt ProcessPaymentQueue.Arn
@@ -50,6 +64,9 @@ functions:
       ORDERS_TABLE: !Ref OrdersTable
   GetOrder:
     handler: src/handlers/get_order.handler
+    package:
+      patterns:
+        - src/handlers/get_order.py
     events:
       - http:
           path: /orders/{order_id}

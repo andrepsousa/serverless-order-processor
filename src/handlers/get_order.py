@@ -2,8 +2,10 @@ import json
 import os
 import boto3
 from decimal import Decimal
+from aws_xray_sdk.core import patch_all
 
 
+patch_all()
 class DecimalEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, Decimal):

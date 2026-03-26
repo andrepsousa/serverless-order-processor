@@ -4,7 +4,9 @@ import uuid
 import boto3
 from datetime import datetime, timezone
 from decimal import Decimal
+from aws_xray_sdk.core import patch_all
 
+patch_all()
 dynamodb = boto3.resource('dynamodb')
 sqs = boto3.client('sqs')
 
@@ -59,4 +61,3 @@ def handler(event, context):
             'statusCode': 500,
             'body': json.dumps({'error': "Erro interno do servidor."})
         }
-    
